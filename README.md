@@ -151,6 +151,7 @@ To optimize, follow the ESR order:
 ### **Benefits**
 - **Efficient Index Usage**: The query fully utilizes the index.
 - **No In-Memory Sorting**: Sorting is handled by the index.
+    - **Note:** If MongoDB does in-memory sorting, all documents stored on disk are read into RAM, then a sorting algorithm is performed. In-memory sorting is inefficient, time-consuming & sorting a large number of documents in memory is quite expensive. Moreover, MongoDB aborts the operation if memory usage is more than 32MB.
 - **Improved Performance**: Faster query execution, even on large datasets.
 
 
