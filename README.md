@@ -1,5 +1,22 @@
 # MongoDB ESR Rule(Equality, Sort, Range)
 
+## **Table of Contents**
+
+- [Introduction](#introduction)
+
+- [Why Was ESR Introduced?](#Why-Was-ESR-Introduced?)
+
+- [Why is the order ESR followed](#Why-is-the-order-ESR-followed)
+
+- [Before ESR](#Before-ESR)
+
+- [After ESR](#After-ESR)
+
+- [Comparison](#Comparison)
+
+
+
+## ** Introduction**
 
 The **ESR Rule** in MongoDB stands for **Equality, Sort, Range**, a set of principles to design and utilize indexes efficiently for query optimization. Following this rule ensures that indexes are used effectively to minimize query execution time and improve performance.
 
@@ -23,23 +40,23 @@ The order **ESR (Equality, Sort, Range)** is used in MongoDB because it aligns w
 
 1. **Equality (E)**  
 
--  Equality conditions (e.g., `field = value`) are the most restrictive and quickly reduce the dataset to relevant matches.  
+  -  Equality conditions (e.g., `field = value`) are the most restrictive and quickly reduce the dataset to relevant matches.  
  
--  By narrowing down the dataset early, it minimizes the work required for sorting or evaluating ranges.  
+  -  By narrowing down the dataset early, it minimizes the work required for sorting or evaluating ranges.  
 
 
 2. **Sort (S)**  
 
--  After equality filtering, sorting can be done more efficiently on the reduced dataset.  
+  -  After equality filtering, sorting can be done more efficiently on the reduced dataset.  
  
--  If the sort order matches the index order, MongoDB can sort without additional processing, avoiding slow in-memory sorting.  
+  -  If the sort order matches the index order, MongoDB can sort without additional processing, avoiding slow in-memory sorting.  
 
 
 3. **Range (R)**  
  
--  Range conditions (e.g., `field > value`, `field < value`) are less restrictive and often result in larger datasets.  
+  -  Range conditions (e.g., `field > value`, `field < value`) are less restrictive and often result in larger datasets.  
  
--  Placing range queries last ensures that they are applied only after equality filtering and sorting, making the query faster and more efficient.
+  -  Placing range queries last ensures that they are applied only after equality filtering and sorting, making the query faster and more efficient.
 
 
 
@@ -54,6 +71,8 @@ Find transactions where:
 3. The results are sorted by `transaction_date` in ascending order (**Sort**).
 
 
+### **Step-by-Step Guide**
+
 1. **Create an Index**
    - Navigate to the `Indexes` tab in MongoDB Compass for your collection (`transactions`).
    - Click **`Create Index`**.
@@ -64,7 +83,6 @@ Find transactions where:
    - Name your index (e.g., `amount_transaction_type_date_index`).
    - Click **`Create Index`**.
    - ![alt text](images/before_esr1.png)
-
 
 
 2. **Run the Query**
@@ -81,7 +99,7 @@ Find transactions where:
     ```
    - Click **`Find`**.
    - ![alt text](images/before_esr2.png)
----
+
 
 3. **Explain Plan**
    - Click on **`Explain Plan`** to analyze the query.
@@ -91,7 +109,7 @@ Find transactions where:
 
 
 
-#### **Issues**
+### **Issues**
 
 - **Inefficient Index Scan**: MongoDB starts with the `amount` field, which is less restrictive than `transaction_type`. This results in a larger dataset being processed before filtering.
 - **In-Memory Sorting**: Sorting on `transaction_date` is performed in memory, increasing resource usage.
@@ -108,6 +126,9 @@ To optimize, follow the ESR order:
 1. **Equality**: `transaction_type = "Deposit"` should come first.
 2. **Sort**: `transaction_date` should come next.
 3. **Range**: `amount >= 3000` should be evaluated last.
+
+
+### **Step-by-Step Guide**
 
 
 1. **Create an Optimized Index**
@@ -157,7 +178,8 @@ To optimize, follow the ESR order:
 
 ---
 
-### **Comparison**
+## **Comparison**
+
 | Aspect                  | Before ESR                          | After ESR                           |
 |-------------------------|--------------------------------------|-------------------------------------|
 | **Index**               | `{ amount: 1, transaction_type: 1, transaction_date: 1 }` | `{ transaction_type: 1, transaction_date: 1, amount: 1 }` |
