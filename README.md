@@ -77,7 +77,7 @@ Find transactions where:
      - Click on `options`
     ```javascript
      sort
-      { transaction_date: -1 }
+      { transaction_date: 1 }
     ```
    - Click **`Find`**.
    - ![alt text](images/before_esr2.png)
@@ -130,7 +130,7 @@ To optimize, follow the ESR order:
    - Click on `options`
     ```javascript
      sort
-      { transaction_date: -1 }
+      { transaction_date: 1 }
     ```
    - Click **`Find`**.
    - ![alt text](images/after_esr2.png)
