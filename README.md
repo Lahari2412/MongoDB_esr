@@ -134,7 +134,7 @@ To optimize, follow the ESR order:
 
 
 1. **Create an Optimized Index**
-   - Go to the `Indexes` tab and click **`Create Index`**.
+   - Go to the **`Indexes`** tab and click **`Create Index`**.
    - Add the following fields:
      - `transaction_type` as **Ascending (1)**.
      - `transaction_date` as **Ascending (1)**.
@@ -146,7 +146,7 @@ To optimize, follow the ESR order:
 
 2. **Run the Optimized Query**
    - Go to the **`Documents`** tab.
-   - Enter the same query:
+   - Enter the query:
      ```javascript
      { transaction_type: "Deposit", amount: { $gte: 3000 } }
      ```
