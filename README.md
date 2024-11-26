@@ -1,12 +1,12 @@
-# MongoDB ESR Rule(Equality, Sort, Range)
+# **MongoDB ESR Rule(Equality, Sort, Range)**
 
 ## **Table of Contents**
 
 - [Introduction](#introduction)
 
-- [Why Was ESR Introduced?](#Why-Was-ESR-Introduced?)
+- [Why was ESR introduced?](#why-was-ESR-introduced)
 
-- [Why is the order ESR followed](#Why-is-the-order-ESR-followed)
+- [Why is the order ESR followed](#why-is-the-order-ESR-followed)
 
 - [Before ESR](#Before-ESR)
 
@@ -14,9 +14,9 @@
 
 - [Comparison](#Comparison)
 
+---
 
-
-## ** Introduction**
+## **Introduction**
 
 The **ESR Rule** in MongoDB stands for **Equality, Sort, Range**, a set of principles to design and utilize indexes efficiently for query optimization. Following this rule ensures that indexes are used effectively to minimize query execution time and improve performance.
 
@@ -24,8 +24,9 @@ The **ESR Rule** in MongoDB stands for **Equality, Sort, Range**, a set of princ
 - **Sort:** Include fields used for sorting next to avoid in-memory sorting.
 - **Range:** Add fields with range filters last, as they are less restrictive.
 
+---
 
-## **Why Was ESR Introduced?**
+## **Why was ESR introduced?**
 
 MongoDB indexes are designed to process queries efficiently, but not all queries utilize indexes effectively.
 
@@ -33,6 +34,7 @@ MongoDB indexes are designed to process queries efficiently, but not all queries
 
 **Solution:** The ESR rule provides a structured approach to query design that matches how MongoDB's query planner and index structures operate, ensuring maximum performance.
 
+---
 
 ## **Why is the order ESR followed**
 
@@ -40,25 +42,25 @@ The order **ESR (Equality, Sort, Range)** is used in MongoDB because it aligns w
 
 1. **Equality (E)**  
 
-  -  Equality conditions (e.g., `field = value`) are the most restrictive and quickly reduce the dataset to relevant matches.  
+    -  Equality conditions (e.g., `field = value`) are the most restrictive and quickly reduce the dataset to relevant matches.  
  
-  -  By narrowing down the dataset early, it minimizes the work required for sorting or evaluating ranges.  
+    -  By narrowing down the dataset early, it minimizes the work required for sorting or evaluating ranges.  
 
 
 2. **Sort (S)**  
 
-  -  After equality filtering, sorting can be done more efficiently on the reduced dataset.  
+    -  After equality filtering, sorting can be done more efficiently on the reduced dataset.  
  
-  -  If the sort order matches the index order, MongoDB can sort without additional processing, avoiding slow in-memory sorting.  
+    -  If the sort order matches the index order, MongoDB can sort without additional processing, avoiding slow in-memory sorting.  
 
 
 3. **Range (R)**  
  
-  -  Range conditions (e.g., `field > value`, `field < value`) are less restrictive and often result in larger datasets.  
+    -  Range conditions (e.g., `field > value`, `field < value`) are less restrictive and often result in larger datasets.  
  
-  -  Placing range queries last ensures that they are applied only after equality filtering and sorting, making the query faster and more efficient.
+    -  Placing range queries last ensures that they are applied only after equality filtering and sorting, making the query faster and more efficient.
 
-
+---
 
 ## **Before ESR** 
 
@@ -175,10 +177,11 @@ To optimize, follow the ESR order:
     - **Note:** If MongoDB does in-memory sorting, all documents stored on disk are read into RAM, then a sorting algorithm is performed. In-memory sorting is inefficient, time-consuming & sorting a large number of documents in memory is quite expensive. Moreover, MongoDB aborts the operation if memory usage is more than 32MB.
 - **Improved Performance**: Faster query execution, even on large datasets.
 
-
 ---
 
+
 ## **Comparison**
+
 
 | Aspect                  | Before ESR                          | After ESR                           |
 |-------------------------|--------------------------------------|-------------------------------------|
